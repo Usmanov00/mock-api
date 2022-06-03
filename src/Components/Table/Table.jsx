@@ -23,34 +23,40 @@ const Table = () => {
   //   axios.post('https://62995e9f7b866a90ec3ac462.mockapi.io/students')
   // }
 
-  const [data, setData] = useState({
-    name: "",
-    group: "",
-    date: "",
-    number: "",
-    mail: ""
-  })
-
-  function submit(e) {
-    e.preventDefault()
-    axios.post('https://62995e9f7b866a90ec3ac462.mockapi.io/students',{
-      name: data.name,
-      group: data.group,
-      date: data.date,
-      number: data.number,
-      mail: data.mail
+    const [data, setData] = useState({
+      name: "",
+      group: "",
+      date: "",
+      number: "",
+      mail: ""
     })
-      .then(res => {
-        console.log(res.data)
-      })
-  }
 
-  function handle (e) {
-  const newData = {...data}
-    newData[e.target.id] = e.target.value
-    setData(newData)
-    console.log(newData)
-  }
+    function submit(e) {
+      e.preventDefault()
+      axios.post('https://62995e9f7b866a90ec3ac462.mockapi.io/students',{
+        name: data.name,
+        group: data.group,
+        date: data.date,
+        number: data.number,
+        mail: data.mail
+      })
+        .then(res => {
+          console.log(res.data)
+        })
+    }
+
+    function handle (e) {
+    const newData = {...data}
+      newData[e.target.id] = e.target.value
+      setData(newData)
+      console.log(newData)
+    }
+
+
+
+
+
+
 
   if (isLoading) {
     return 'loading'
@@ -60,7 +66,7 @@ const Table = () => {
     <div>
       <div>
         <div className="max-w-2xl mx-auto bg-white p-16">
-          <form onSubmit={(e) => e.target.value}>
+          <form onSubmit={(e) => submit(e)}>
             <div className="grid gap-6 mb-6 lg:grid-cols-2">
               <div>
                 <input type="text"
@@ -92,15 +98,15 @@ const Table = () => {
               </div>
             </div>
             <div className="mb-6">
-              <input type="mail"
+              <input type="email"
                      className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
                      placeholder="john.doe@company.com:" required
-                     onChange={(e) => handle(e)} id="mail" value={data.email}
+                     onChange={(e) => handle(e)} id="email" value={data.email}
               />
             </div>
             <button type="submit"
                     className="text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm w-full sm:w-auto px-5 py-2.5 text-center dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800"
-onClick={() => submit()}
+
             >Submit
             </button>
           </form>
