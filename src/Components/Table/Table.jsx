@@ -4,6 +4,31 @@ import axios from "axios";
 const Table = () => {
   const [students, setStudents] = useState([])
   const [isLoading, setIsLoading] = useState(true)
+  const [newStudent, setNewStudent] = useState({
+    userName: '',
+    group: '',
+    year: '',
+    phone: '',
+    email: '',
+  })
+
+
+  const handleSubmit = (e) => {
+    e.preventDefault()
+    console.log(newStudent)
+  }
+
+  const handleChange =  (e) => {
+    setNewStudent({...newStudent, [e.target.name]: e.target.value})
+  }
+
+
+
+  const deleteUser = async (id) => {
+    await axios.delete(`https://62995e9f7b866a90ec3ac462.mockapi.io/students/${id}`)
+    const studentsList = students.filter(item => item.id !== id)
+    setStudents(studentsList)
+  }
 
   useEffect(() => {
     axios(`https://62995e9f7b866a90ec3ac462.mockapi.io/students`)
@@ -13,50 +38,6 @@ const Table = () => {
       })
   }, [])
 
-  const deleteUser = async (id) => {
-    await axios.delete(`https://62995e9f7b866a90ec3ac462.mockapi.io/students/${id}`)
-    const studentsList = students.filter(item => item.id !== id)
-    setStudents(studentsList)
-  }
-
-  // const  handleClick = () => {
-  //   axios.post('https://62995e9f7b866a90ec3ac462.mockapi.io/students')
-  // }
-
-    const [data, setData] = useState({
-      name: "",
-      group: "",
-      date: "",
-      number: "",
-      mail: ""
-    })
-
-    function submit(e) {
-      e.preventDefault()
-      axios.post('https://62995e9f7b866a90ec3ac462.mockapi.io/students',{
-        name: data.name,
-        group: data.group,
-        date: data.date,
-        number: data.number,
-        mail: data.mail
-      })
-        .then(res => {
-          console.log(res.data)
-        })
-    }
-
-    function handle (e) {
-    const newData = {...data}
-      newData[e.target.id] = e.target.value
-      setData(newData)
-      console.log(newData)
-    }
-
-
-
-
-
-
 
   if (isLoading) {
     return 'loading'
@@ -65,54 +46,102 @@ const Table = () => {
   return (
     <div>
       <div>
-        <div className="max-w-2xl mx-auto bg-white p-16">
-          <form onSubmit={(e) => submit(e)}>
-            <div className="grid gap-6 mb-6 lg:grid-cols-2">
-              <div>
-                <input type="text"
-                       className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
-                       placeholder="Name:" required
-                       onChange={(e) => handle(e)} id="name" value={data.name}
-                />
-              </div>
-              <div>
-                <input type="text"
-                       className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
-                       placeholder="Group:" required
-                       onChange={(e) => handle(e)} id="group" value={data.group}
-                />
-              </div>
-              <div>
-                <input type="date"
-                       className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
-                       placeholder="Date:" required
-                       onChange={(e) => handle(e)} id="date" value={data.date}
-                />
-              </div>
-              <div>
-                <input type="tel"
-                       className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
-                       placeholder="+996(666)666-666:" pattern="[+][0-9]{3}[0-9]{3}[0-9]{3}[0-9]{3}" required
-                       onChange={(e) => handle(e)} id="number" value={data.number}
-                />
-              </div>
-            </div>
-            <div className="mb-6">
-              <input type="email"
-                     className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
-                     placeholder="john.doe@company.com:" required
-                     onChange={(e) => handle(e)} id="email" value={data.email}
+        <div className="flex items-center justify-center p-12">
+        <div className="mx-auto w-full max-w-[550px]">
+          <form onSubmit={handleSubmit}>
+            <div className="mb-5">
+              <label
+                htmlFor="name"
+                className="mb-3 block text-base font-medium text-[#07074D]"
+              >
+                Full Name
+              </label>
+              <input
+                type="text"
+                name="userName"
+                id="name"
+                placeholder="Full Name"
+                className="w-full rounded-md border border-[#e0e0e0] bg-white py-3 px-6 text-base font-medium text-[#6B7280] outline-none focus:border-[#6A64F1] focus:shadow-md"
+             onChange={handleChange}
               />
             </div>
-            <button type="submit"
-                    className="text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm w-full sm:w-auto px-5 py-2.5 text-center dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800"
-
-            >Submit
-            </button>
+            <div className="mb-5">
+              <label
+                htmlFor="group"
+                className="mb-3 block text-base font-medium text-[#07074D]"
+              >
+                Group
+              </label>
+              <input
+                type="text"
+                name="group"
+                id="group"
+                placeholder="Enter your group"
+                className="w-full rounded-md border border-[#e0e0e0] bg-white py-3 px-6 text-base font-medium text-[#6B7280] outline-none focus:border-[#6A64F1] focus:shadow-md"
+              onChange={handleChange}
+              />
+            </div>
+            <div className="mb-5">
+              <label
+                htmlFor="year"
+                className="mb-3 block text-base font-medium text-[#07074D]"
+              >
+                Year
+              </label>
+              <input
+                type="date"
+                name="year"
+                id="year"
+                placeholder="Enter your year"
+                className="w-full rounded-md border border-[#e0e0e0] bg-white py-3 px-6 text-base font-medium text-[#6B7280] outline-none focus:border-[#6A64F1] focus:shadow-md"
+              onChange={handleChange}
+              />
+            </div>
+            <div className="mb-5">
+              <label
+                htmlFor="phone"
+                className="mb-3 block text-base font-medium text-[#07074D]"
+              >
+                Phone
+              </label>
+              <input
+                type="text"
+                name="phone"
+                id="phone"
+                placeholder="Enter your phone"
+                className="w-full rounded-md border border-[#e0e0e0] bg-white py-3 px-6 text-base font-medium text-[#6B7280] outline-none focus:border-[#6A64F1] focus:shadow-md"
+              onChange={handleChange}
+              />
+            </div>
+            <div className="mb-5">
+              <label
+                htmlFor="email"
+                className="mb-3 block text-base font-medium text-[#07074D]"
+              >
+                Email Address
+              </label>
+              <input
+                type="email"
+                name="email"
+                id="email"
+                placeholder="example@domain.com"
+                className="w-full rounded-md border border-[#e0e0e0] bg-white py-3 px-6 text-base font-medium text-[#6B7280] outline-none focus:border-[#6A64F1] focus:shadow-md"
+              onChange={handleChange}
+              />
+            </div>
+            <div>
+              <button
+                className="hover:shadow-htmlForm rounded-md bg-[#6A64F1] py-3 px-8 text-base font-semibold text-white outline-none"
+              >
+                Create
+              </button>
+            </div>
           </form>
         </div>
       </div>
-      <table className="table-auto w-full">
+      </div>
+      <div>
+        <table className="table-auto w-full">
         <thead>
         <tr className="bg-primary text-center bg-blue-500">
           <th
@@ -186,6 +215,7 @@ const Table = () => {
           ))
         }
       </table>
+      </div>
     </div>
   );
 };
