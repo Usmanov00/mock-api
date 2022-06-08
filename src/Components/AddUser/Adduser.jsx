@@ -29,42 +29,30 @@ const Adduser = ({students, setStudents, setOpenModal, editingUser, setEditingUs
     })
   }
 
-    const handleSubmit = async (e) => {
-      e.preventDefault()
-      const uploadUser = await axios.post('https://62995e9f7b866a90ec3ac462.mockapi.io/students', newStudent)
-      setStudents([...students, uploadUser.data])
-      setNewStudent({
-        name: '',
-        group: '',
-        year: '',
-        phone: '',
-        email: '',
-      })
-      setOpenModal(false)
-    }
-
-
-    // const handleEdit = (student) => {
-    //   setIsEditing(true)
-    //   setUpdateUserId(student.id)
-    //   setNewStudent({
-    //     name: student.name,
-    //     group: student.group,
-    //     year: student.year,
-    //     phone: student.phone,
-    //     email: student.email,
-    //   })
-    // }
+  const handleSubmit = async (e) => {
+    e.preventDefault()
+    const uploadUser = await axios.post('https://62995e9f7b866a90ec3ac462.mockapi.io/students', newStudent)
+    setStudents([...students, uploadUser.data])
+    setNewStudent({
+      name: '',
+      group: '',
+      year: '',
+      phone: '',
+      email: '',
+    })
+    setOpenModal(false)
+  }
 
 
   return (
-    <div>
+    <div className="bg-yellow-900" >
       <div className="fixed flex items-center justify-center p-12 w-full bg-white">
         <div className="mx-auto w-full max-w-[550px]">
-          <div className="absolute right-9 top-9 cursor-pointer" onClick={() =>{
+          <div className="absolute right-9 top-9 cursor-pointer px-1 bg-red-500 text-white rounded-md self-end" onClick={() => {
             setOpenModal(false)
             setEditingUser(null)
-          }}>x</div>
+          }}>x
+          </div>
           <form onSubmit={editingUser ? updateUser : handleSubmit}>
             <div className="mb-5">
               <label

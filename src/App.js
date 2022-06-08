@@ -1,9 +1,9 @@
-import Table from "./Components/Table";
+import Form from "./Components/Form";
 
 function App() {
   return (
-    <div className="App">
-      <Table />
+    <div className="App bg-teal-800		">
+      <Form />
     </div>
   );
 }
