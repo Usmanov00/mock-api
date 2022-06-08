@@ -67,6 +67,7 @@ const Adduser = ({students, setStudents, setOpenModal, editingUser, setEditingUs
                 id="userName"
                 placeholder="Full Name"
                 className="w-full rounded-md border border-[#e0e0e0] bg-white py-3 px-6 text-base font-medium text-[#6B7280] outline-none focus:border-[#6A64F1] focus:shadow-md"
+                required
                 onChange={handleChange}
                 value={newStudent.name}
               />
@@ -84,6 +85,7 @@ const Adduser = ({students, setStudents, setOpenModal, editingUser, setEditingUs
                 id="group"
                 placeholder="Enter your group"
                 className="w-full rounded-md border border-[#e0e0e0] bg-white py-3 px-6 text-base font-medium text-[#6B7280] outline-none focus:border-[#6A64F1] focus:shadow-md"
+                required
                 onChange={handleChange}
                 value={newStudent.group}
               />
@@ -101,6 +103,7 @@ const Adduser = ({students, setStudents, setOpenModal, editingUser, setEditingUs
                 id="year"
                 placeholder="Enter your year"
                 className="w-full rounded-md border border-[#e0e0e0] bg-white py-3 px-6 text-base font-medium text-[#6B7280] outline-none focus:border-[#6A64F1] focus:shadow-md"
+                required
                 onChange={handleChange}
                 value={newStudent.year}
               />
@@ -118,6 +121,7 @@ const Adduser = ({students, setStudents, setOpenModal, editingUser, setEditingUs
                 id="phone"
                 placeholder="Enter your phone"
                 className="w-full rounded-md border border-[#e0e0e0] bg-white py-3 px-6 text-base font-medium text-[#6B7280] outline-none focus:border-[#6A64F1] focus:shadow-md"
+                required
                 onChange={handleChange}
                 value={newStudent.phone}
               />
@@ -135,6 +139,7 @@ const Adduser = ({students, setStudents, setOpenModal, editingUser, setEditingUs
                 id="email"
                 placeholder="example@domain.com"
                 className="w-full rounded-md border border-[#e0e0e0] bg-white py-3 px-6 text-base font-medium text-[#6B7280] outline-none focus:border-[#6A64F1] focus:shadow-md"
+                required
                 onChange={handleChange}
                 value={newStudent.email}
               />
