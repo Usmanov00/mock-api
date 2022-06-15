@@ -1,99 +1,55 @@
-// import React, {useState} from 'react';
 import {useFormik} from "formik";
 import axios from "axios";
-
-const validate = values => {
-  const errors = {};
-  if (!values.name) {
-    errors.name = 'Required'
-  } else
-
-  if (!values.group) {
-    errors.group = 'Required'
-  }
-  if (!values.year) {
-    errors.year = 'Required'
-  }
-  if (!values.phone) {
-    errors.phone = 'Required'
-  }
-
-  if (!values.email) {
-    errors.email = 'Required';
-  } else if (!/^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,4}$/i.test(values.email)) {
-    errors.email = 'Invalid email address';
-  }
-}
+import * as Yup from 'yup'
 
 
 const Adduser = ({students, setStudents, setOpenModal, editingUser, setEditingUser}) => {
-  // const [newStudent, setNewStudent] = useState({
-  //   name: editingUser?.name || '',
-  //   group: editingUser?.group || '',
-  //   year: editingUser?.year || '',
-  //   phone: editingUser?.phone || '',
-  //   email: editingUser?.email || '',
-  // })
-
-
-  // const handleChange = (e) => {
-  //   setNewStudent({...newStudent, [e.target.name]: e.target.value})
-  // }
-
-  // const updateUser = async (e) => {
-  //   e.preventDefault()
-  //   const {data: updatedUser} = await axios.put(`https://62995e9f7b866a90ec3ac462.mockapi.io/students/${editingUser.id}`, newStudent)
-  //   const updateStudentsList = students.map(item => item.id === updatedUser.id ? updatedUser : item)
-  //   setStudents(updateStudentsList)
-  //   setNewStudent({
-  //     name: '',
-  //     group: '',
-  //     year: '',
-  //     phone: '',
-  //     email: '',
-  //   })
-  //   setOpenModal(false)
-  // }
-
-  // const handleSubmit = async (e) => {
-  //   e.preventDefault()
-  //   const uploadUser = await axios.post('https://62995e9f7b866a90ec3ac462.mockapi.io/students', newStudent)
-  //   setStudents([...students, uploadUser.data])
-  //   setNewStudent({
-  //     name: '',
-  //     group: '',
-  //     year: '',
-  //     phone: '',
-  //     email: '',
-  //   })
-  //   setOpenModal(false)
-  // }
-
-  const formik = useFormik ({
+  const formik = useFormik({
     initialValues: {
-      name: '',
-      group: '',
-      year: '',
-      phone: '',
-      email: '',
-    }, validate,
+      name: editingUser?.name || "",
+      group: editingUser?.group || "",
+      year: editingUser?.year || "",
+      email: editingUser?.email || "",
+      phone: editingUser?.phone || ""
+    },
+    validationSchema: Yup.object({
+      name: Yup.string()
+        .min(3,'Must be 3 characters  more')
+        .max(15, 'Must be 13 characters or less')
+        .required('Enter your full name'),
+      group: Yup.string()
+        .min(3,'Must be 3 characters  more')
+        .max(10, 'Must be 20 characters or less')
+        .required('Enter your group'),
+      year: Yup.string()
+        .min(3,'Must be 3 characters  more')
+        .max(10, 'Must be 20 characters or less')
+        .required('Enter your date of birth'),
+      email: Yup.string()
+        .email('Invalid email address')
+        .required('Enter your email'),
+      phone: Yup.string()
+        .min(3,'Must be 3 characters  more')
+        .max(15, 'Must be 15 characters or less')
+        .required('Enter your phone number')
+    }),
     onSubmit: async (values) => {
-        const uploadUser = await axios.post('https://62995e9f7b866a90ec3ac462.mockapi.io/students', values)
-        setStudents([...students, uploadUser.data])
+      const uploadUser = await axios.post('https://62995e9f7b866a90ec3ac462.mockapi.io/students', values)
+      setStudents([...students, uploadUser.data])
       setOpenModal(false)
-      console.log('Boom!!!')
     },
   })
 
 
   return (
-    <div className="bg-yellow-900" >
+    <div className="bg-yellow-900">
       <div className="fixed flex items-center justify-center p-12 w-full bg-white">
         <div className="mx-auto w-full max-w-[550px]">
-          <div className="absolute right-9 top-9 cursor-pointer px-1 bg-red-500 text-white rounded-md self-end" onClick={() => {
-            setOpenModal(false)
-            setEditingUser(null)
-          }}>x
+          <div className="absolute right-9 top-9 cursor-pointer px-1 bg-red-500 text-white rounded-md self-end"
+               onClick={() => {
+                 setOpenModal(false)
+                 setEditingUser(null)
+               }}>x
           </div>
           <form onSubmit={formik.handleSubmit}>
             <div className="mb-5">
@@ -112,7 +68,7 @@ const Adduser = ({students, setStudents, setOpenModal, editingUser, setEditingUs
                 onChange={formik.handleChange}
                 value={formik.values.name}
               />
-              {formik.errors.name ? <div>{formik.errors.name}</div> : null}
+              {formik.errors.name?<div className="text-red-800">{formik.errors.name}</div>:null}
             </div>
             <div className="mb-5">
               <label
@@ -130,8 +86,7 @@ const Adduser = ({students, setStudents, setOpenModal, editingUser, setEditingUs
                 onChange={formik.handleChange}
                 value={formik.values.group}
               />
-              {formik.errors.group ? <div>{formik.errors.group}</div> : null}
-            </div>
+              {formik.errors.group?<div className="text-red-800 ">{formik.errors.group}</div>:null}</div>
             <div className="mb-5">
               <label
                 htmlFor="year"
@@ -148,7 +103,7 @@ const Adduser = ({students, setStudents, setOpenModal, editingUser, setEditingUs
                 onChange={formik.handleChange}
                 value={formik.values.year}
               />
-              {formik.errors.year ? <div>{formik.errors.year}</div> : null}
+              {formik.errors.year?<div className="text-red-700">{formik.errors.year}</div>:null}
             </div>
             <div className="mb-5">
               <label
@@ -166,7 +121,7 @@ const Adduser = ({students, setStudents, setOpenModal, editingUser, setEditingUs
                 onChange={formik.handleChange}
                 value={formik.values.phone}
               />
-              {formik.errors.phone ? <div>{formik.errors.phone}</div> : null}
+              {formik.errors.phone?<div className="text-red-700">{formik.errors.phone}</div>:null}
             </div>
             <div className="mb-5">
               <label
@@ -184,7 +139,7 @@ const Adduser = ({students, setStudents, setOpenModal, editingUser, setEditingUs
                 onChange={formik.handleChange}
                 value={formik.values.email}
               />
-              {formik.errors.email ? <div>{formik.errors.email}</div> : null}
+              {formik.errors.email?<div className="text-red-700">{formik.errors.email}</div>:null}
             </div>
             <div>
               <button
