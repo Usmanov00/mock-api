@@ -34,8 +34,14 @@ const Adduser = ({students, setStudents, setOpenModal, editingUser, setEditingUs
         .required('Enter your phone number')
     }),
     onSubmit: async (values) => {
-      const uploadUser = await axios.post('https://62995e9f7b866a90ec3ac462.mockapi.io/students', values)
-      setStudents([...students, uploadUser.data])
+      if(editingUser.name){
+        const {data:updatedUser} = await axios.put(`https://62995e9f7b866a90ec3ac462.mockapi.io/students/${editingUser.id}`,values)
+        const updateStudentList = students.map(item => item.id === updatedUser.id? updatedUser:item)
+        setStudents(updateStudentList)
+      } else {
+        const uploadUser = await axios.post('https://62995e9f7b866a90ec3ac462.mockapi.io/students', values)
+        setStudents([...students, uploadUser.data])
+      }
       setOpenModal(false)
     },
   })
@@ -68,7 +74,7 @@ const Adduser = ({students, setStudents, setOpenModal, editingUser, setEditingUs
                 onChange={formik.handleChange}
                 value={formik.values.name}
               />
-              {formik.errors.name?<div className="text-red-800">{formik.errors.name}</div>:null}
+              {formik.errors.name?<div className="text-red-500">{formik.errors.name}</div>:null}
             </div>
             <div className="mb-5">
               <label
@@ -86,7 +92,7 @@ const Adduser = ({students, setStudents, setOpenModal, editingUser, setEditingUs
                 onChange={formik.handleChange}
                 value={formik.values.group}
               />
-              {formik.errors.group?<div className="text-red-800 ">{formik.errors.group}</div>:null}</div>
+              {formik.errors.group?<div className="text-red-500 ">{formik.errors.group}</div>:null}</div>
             <div className="mb-5">
               <label
                 htmlFor="year"
@@ -103,7 +109,7 @@ const Adduser = ({students, setStudents, setOpenModal, editingUser, setEditingUs
                 onChange={formik.handleChange}
                 value={formik.values.year}
               />
-              {formik.errors.year?<div className="text-red-700">{formik.errors.year}</div>:null}
+              {formik.errors.year?<div className="text-red-500">{formik.errors.year}</div>:null}
             </div>
             <div className="mb-5">
               <label
@@ -121,7 +127,7 @@ const Adduser = ({students, setStudents, setOpenModal, editingUser, setEditingUs
                 onChange={formik.handleChange}
                 value={formik.values.phone}
               />
-              {formik.errors.phone?<div className="text-red-700">{formik.errors.phone}</div>:null}
+              {formik.errors.phone?<div className="text-red-500">{formik.errors.phone}</div>:null}
             </div>
             <div className="mb-5">
               <label
@@ -139,7 +145,7 @@ const Adduser = ({students, setStudents, setOpenModal, editingUser, setEditingUs
                 onChange={formik.handleChange}
                 value={formik.values.email}
               />
-              {formik.errors.email?<div className="text-red-700">{formik.errors.email}</div>:null}
+              {formik.errors.email?<div className="text-red-500">{formik.errors.email}</div>:null}
             </div>
             <div>
               <button
