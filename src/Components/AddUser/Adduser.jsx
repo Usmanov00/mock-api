@@ -1,6 +1,8 @@
+import React from "react";
 import {useFormik} from "formik";
 import axios from "axios";
 import * as Yup from 'yup'
+import {toast} from "react-toastify";
 
 
 const Adduser = ({students, setStudents, setOpenModal, editingUser, setEditingUser}) => {
@@ -34,18 +36,20 @@ const Adduser = ({students, setStudents, setOpenModal, editingUser, setEditingUs
         .required('Enter your phone number')
     }),
     onSubmit: async (values) => {
-      if(editingUser.name){
+      if(editingUser){
         const {data:updatedUser} = await axios.put(`https://62995e9f7b866a90ec3ac462.mockapi.io/students/${editingUser.id}`,values)
         const updateStudentList = students.map(item => item.id === updatedUser.id? updatedUser:item)
         setStudents(updateStudentList)
+        toast.success('Edited')
+
       } else {
         const uploadUser = await axios.post('https://62995e9f7b866a90ec3ac462.mockapi.io/students', values)
         setStudents([...students, uploadUser.data])
+        toast.success('Created')
       }
       setOpenModal(false)
     },
   })
-
 
   return (
     <div className="bg-yellow-900">
@@ -149,7 +153,7 @@ const Adduser = ({students, setStudents, setOpenModal, editingUser, setEditingUs
             </div>
             <div>
               <button
-                className="hover:shadow-htmlForm rounded-md bg-[#6A64F1] py-3 px-8 text-base font-semibold text-white outline-none"
+                className="hover:shadow-htmlForm rounded-md bg-[#6A64F1] py-3 px-8 text-base fontsemi-bold text-white outline-none"
                 type="submit"
               >
                 {editingUser ? 'update' : 'Create'}

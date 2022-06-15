@@ -1,7 +1,10 @@
 import React, {useEffect, useState} from 'react';
+import { ToastContainer, toast } from 'react-toastify';
 import axios from "axios";
 import Adduser from "../AddUser";
 import addNewStudents from '../../assets/Image/img.png'
+import 'react-toastify/dist/ReactToastify.css';
+
 
 const Form = () => {
   const [students, setStudents] = useState([])
@@ -22,6 +25,7 @@ const Form = () => {
     await axios.delete(`https://62995e9f7b866a90ec3ac462.mockapi.io/students/${id}`)
     const studentsList = students.filter(item => item.id !== id)
     setStudents(studentsList)
+    toast.success("Student was deleted")
   }
 
   useEffect(() => {
@@ -135,9 +139,9 @@ const Form = () => {
             ))
           }
         </table>
+        <ToastContainer/>
       </div>
     </div>
-
   );
 };
 
